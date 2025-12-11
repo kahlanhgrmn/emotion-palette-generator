@@ -42,7 +42,7 @@ const moodPalettes = {
 };
 
 // remember last mood and overlay
-function moodApply(mood){
+function applyMood(mood){
     const colour = moodOverlayColours[mood] || "transparent";
 
     overlay.style.background = colour;

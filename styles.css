@@ -91,7 +91,7 @@ video {
     justify-content: flex-end;
 }
 
-#viewPalettesBtn{
+#viewPalettesBtn, #backToCameraBtn{
     border: none;
     padding: 8px 14px;
     border-radius: 999px;
@@ -102,7 +102,7 @@ video {
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
-#viewPalettesBtn:hover{
+#viewPalettesBtn:hover, #backToCameraBtn:hover{
     background: #c1ecd8;
     transform: translateY(-1px);
 }
