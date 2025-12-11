@@ -107,6 +107,68 @@ video {
     transform: translateY(-1px);
 }
 
+.palette-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.mood-card {
+    background: #f7f7ff;
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.mood-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mood-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.mood-tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e5f4ff;
+    color: #28506d;
+}
+
+.mood-card.highlight {
+    border: 2px solid #a4d8b5;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.mood-palette {
+    display: flex;
+    gap: 8px;
+}
+
+.mood-swatch {
+    flex: 1;
+    border-radius: 10px;
+    height: 36px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.mood-swatch span {
+    position: absolute;
+    bottom: 3px;
+    right: 5px;
+    font-size: 0.7rem;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+
 .note {
     font-size: 0.8rem;
     color: #777;
