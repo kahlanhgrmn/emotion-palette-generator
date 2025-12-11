@@ -84,6 +84,29 @@ video {
     transform: translateY(-1px);
 }
 
+.nav-row{
+    margin-top: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#viewPalettesBtn{
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #d8f5e6;
+    color: #204332;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+#viewPalettesBtn:hover{
+    background: #c1ecd8;
+    transform: translateY(-1px);
+}
+
 .note {
     font-size: 0.8rem;
     color: #777;

@@ -1,8 +1,9 @@
 const video = document.getElementById("video");
 const overlay = document.getElementById("overlay");
 const moodButtons = document.querySelectorAll("[data-mood]");
+const viewPalettesBtn = document.getElementById("viewPalettesBtn");
 
-// 1. Start the camera
+// start the camera
 async function startCamera() {
     console.log("Attempting to start camera...");
 
@@ -23,8 +24,8 @@ async function startCamera() {
     }
 }
 
-// 2. Define colours for each mood
-const moodOverlayColors = {
+// colours for each mood
+const moodOverlayColours = {
     none: "transparent",
     happy: "rgba(255, 217, 114, 0.6)",   // yellow
     calm: "rgba(117, 230, 218, 0.6)",    // teal
@@ -32,15 +33,29 @@ const moodOverlayColors = {
     angry: "rgba(255, 106, 136, 0.6)"    // red
 };
 
-// 3. Apply mood overlay
-function applyMood(mood){
-    const color = moodOverlayColors[mood] || "transparent";
+// mood palettes
+const moodPalettes = {
+    happy: ["#FFF7AE", "#FFD972", "#FFB347", "#FF9A76"],
+    calm: ["#D4F1F4", "#75E6DA", "#189AB4", "#05445E"],
+    sad: ["#C3D0FF", "#8896D7", "#4C5B9B", "#22223B"],
+    angry: ["#FF9A8B", "#FF6A88", "#FF4E50", "#C81D25"]
+};
 
-    overlay.style.background = color;
+// remember last mood and overlay
+function moodApply(mood){
+    const colour = moodOverlayColours[mood] || "transparent";
+
+    overlay.style.background = colour;
     overlay.style.opacity = (mood === "none")? "0" : "1";
+
+    localStorage.setItem("lastMood", mood);
+
+    if(moodPalettes[mood]){
+        localStorage.setItem("lastPalette", JSON.stringify(moodPalettes[mood]));
+    }
 }
 
-// 4. Hook up buttons
+// buttons hooked up
 moodButtons.forEach(btn => {
     btn.addEventListener("click", () => {
         const mood = btn.dataset.mood;
@@ -48,7 +63,14 @@ moodButtons.forEach(btn => {
     });
 });
 
-// 5. Start camera
+// go to the palette page
+if(viewPalettesBtn){
+    viewPalettesBtn.addEventListener("click", () =>{
+        window.location.href = "palette.html";
+    });
+}
+
+// start camera
 document.addEventListener("DOMContentLoaded", () => {
     startCamera();
 });
