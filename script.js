@@ -33,36 +33,36 @@ const moodOverlayColours = {
     angry: "rgba(255, 106, 136, 0.6)"    // red
 };
 
-// mood palettes
+// mood palettes (each mood has multiple named variants)
 const moodPalettes = {
     happy: [
-        ["#E2852E", "#F5C857", "#FFEE91", "#ABE0F0"], //summer beach
-        ["#FF9B00", "#FFE100", "#FFC900", "#EBE389"], //cool lemonade
-        ["#FFDCDC", "#FFF2EB", "#FFE8CD", "#FFD6BA"], //pastel paradise
-        ["#FFE99A", "#FFD586", "#FFAAAA", "#FF9898"] //sunrise vibes
+        { name: "summer beach", colours: ["#E2852E", "#F5C857", "#FFEE91", "#ABE0F0"] },
+        { name: "cool lemonade", colours: ["#FF9B00", "#FFE100", "#FFC900", "#EBE389"] },
+        { name: "pastel paradise", colours: ["#FFDCDC", "#FFF2EB", "#FFE8CD", "#FFD6BA"] },
+        { name: "sunrise vibes", colours: ["#FFE99A", "#FFD586", "#FFAAAA", "#FF9898"] }
     ],
 
     sad: [
-        ["#455566", "#3e4954", "#35393d", "#282b2e"], //gloomy grey
-        ["#004b90", "#175981", "#016c8b", "#0071b6"], //the blues
-        ["#5b5d68", "#7d7f7d", "#b3c1d6", "#b0c4de"], //stormy skies
-        ["#2f4f4f", "#6a5acd", "#a9a9a9", "#000000"] //sombre shades
+        { name: "gloomy grey", colours: ["#455566", "#3E4954", "#35393D", "#282B2E"] },
+        { name: "the blues", colours: ["#004B90", "#175981", "#016C8B", "#0071B6"] },
+        { name: "stormy skies", colours: ["#5B5D68", "#7D7F7D", "#B3C1D6", "#B0C4DE"] },
+        { name: "sombre shades", colours: ["#2F4F4F", "#6A5ACD", "#A9A9A9", "#000000"] }
     ],
 
     calm:[
-        ["#b8d8ba", "#d9dbbc", "#f4e8c1", "#fcddbc"], //mint mojito
-        ["#b2967d", "#e6beae", "#b3cbb9", "#ecf8f8"], //walk with nature
-        ["#270f36", "#632b6c", "#c76b98", "#f09f9c"], //purple parade
-        ["#779ba1", "#f6e2ba", "#897a74", "#d6a780"] //sandy shores
+        { name: "mint mojito", colours: ["#B8D8BA", "#D9DBBC", "#F4E8C1", "#FCDDBC"] },
+        { name: "walk with nature", colours: ["#B2967D", "#E6BEAE", "#B3CBB9", "#ECF8F8"] },
+        { name: "purple parade", colours: ["#270F36", "#632B6C", "#C76B98", "#F09F9C"] },
+        { name: "sandy shores", colours: ["#779BA1", "#F6E2BA", "#897A74", "#D6A780"] }
     ],
 
     angry:[
-        ["#e72222", "#c93030", "#ab3232", "#963232"], //red hot
-        ["#a70120", "#e26834ff", "#e9da58ff", "#fff3b4ff"], //flame burst
-        ["#581845", "#900c3f", "#c70039", "#ff5733"], //fierce fire
-        ["#000000", "#4d4444ff", "#a9a9a9", "#ff0000"] //obsidian clash
+        { name: "red hot", colours: ["#E72222", "#C93030", "#AB3232", "#963232"] },
+        { name: "flame burst", colours: ["#A70120", "#E26834FF", "#E9DA58FF", "#FFF3B4FF"] },
+        { name: "fierce fire", colours: ["#581845", "#900C3F", "#C70039", "#FF5733"] },
+        { name: "obsidian clash", colours: ["#000000", "#4D4444FF", "#A9A9A9", "#FF0000"] }
     ]
-}
+};
 
 // remember last mood and overlay
 function applyMood(mood){
@@ -73,9 +73,8 @@ function applyMood(mood){
 
     localStorage.setItem("lastMood", mood);
 
-    if(moodPalettes[mood]){
-        localStorage.setItem("lastPalette", JSON.stringify(moodPalettes[mood]));
-    }
+    // we only need to remember the mood so the palette page shows that mood's variants
+    // don't persist entire palette objects here
 }
 
 // buttons hooked up

@@ -7,14 +7,14 @@
 
 body{
     min-height: 100vh;
-    background: linear-gradient(135deg, #fef6ff, #e4f5ff);
+    background: linear-gradient(135deg, #FEF6FF, #E4F5FF);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .app{
-    background: #ffffffdd;
+    background: #FFFFFFDD;
     border-radius: 18px;
     padding: 24px 28px 32px;
     width: 100%;
@@ -74,13 +74,13 @@ video {
     border-radius: 999px;
     font-size: 0.9rem;
     cursor: pointer;
-    background: #f2f2ff;
+    background: #F2F2FF;
     color: #333;
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
 .controls button:hover {
-    background: #e0ddff;
+    background: #E0DDFF;
     transform: translateY(-1px);
 }
 
@@ -97,13 +97,13 @@ video {
     border-radius: 999px;
     font-size: 0.9rem;
     cursor: pointer;
-    background: #d8f5e6;
+    background: #D8F5E6;
     color: #204332;
     transition: background 0.2s ease, transform 0.1s ease;
 }
 
 #viewPalettesBtn:hover, #backToCameraBtn:hover{
-    background: #c1ecd8;
+    background: #C1ECD8;
     transform: translateY(-1px);
 }
 
@@ -115,7 +115,7 @@ video {
 }
 
 .mood-card {
-    background: #f7f7ff;
+    background: #F7F7FF;
     border-radius: 14px;
     padding: 12px 14px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -137,18 +137,34 @@ video {
     font-size: 0.75rem;
     padding: 2px 8px;
     border-radius: 999px;
-    background: #e5f4ff;
-    color: #28506d;
+    background: #E5F4FF;
+    color: #28506D;
 }
 
 .mood-card.highlight {
-    border: 2px solid #a4d8b5;
+    border: 2px solid #A4D8B5;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .mood-palette {
     display: flex;
-    gap: 8px;
+    gap: 12px;
+}
+
+.mood-variant {
+    padding: 12px 0 18px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    margin-bottom: 18px;
+}
+
+.mood-variant:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.mood-variant .note {
+    margin: 0 0 6px;
 }
 
 .mood-swatch {
@@ -164,8 +180,10 @@ video {
     bottom: 3px;
     right: 5px;
     font-size: 0.7rem;
-    color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    color: #FFF;
+    font-weight: 600;
+    /* multi-directional shadows create a subtle black outline for legibility */
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 2px rgba(0,0,0,0.5);
 }
 
 
