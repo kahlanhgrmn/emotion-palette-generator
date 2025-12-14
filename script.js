@@ -27,9 +27,9 @@ async function startCamera() {
 // colours for each mood
 const moodOverlayColours = {
     none: "transparent",
-    happy: "rgba(255, 217, 114, 0.6)",   // yellow
-    calm: "rgba(117, 230, 218, 0.6)",    // teal
-    sad: "rgba(88, 111, 179, 0.6)",      // blue
+    happy: "rgba(192, 147, 22, 0.6)",   // yellow
+    calm: "rgba(192, 255, 249, 0.6)",    // light blue
+    sad: "rgba(28, 71, 201, 0.6)",      // blue
     angry: "rgba(255, 106, 136, 0.6)"    // red
 };
 

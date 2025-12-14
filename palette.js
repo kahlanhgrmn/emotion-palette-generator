@@ -43,9 +43,75 @@ const moodPalettes = {
     ]
 };
 
-// render palettes: show all variants for the mood(s)
+// saved message timer for brief UI feedback
+let _savedMsgTimer = null;
+// selection timer to auto-clear the visual selection
+let _selectionTimer = null;
+
+function clearSavedMessage(){
+    if(_savedMsgTimer) clearTimeout(_savedMsgTimer);
+    _savedMsgTimer = null;
+}
+
+function showSavedMessage(text){
+    paletteHeader.textContent = text;
+    clearSavedMessage();
+    _savedMsgTimer = setTimeout(() => {
+        // restore header (either showing mood or "all palettes")
+        if(lastMood && lastMood !== 'none'){
+            const friendly = lastMood.charAt(0).toUpperCase() + lastMood.slice(1);
+            paletteHeader.textContent = `Showing ${friendly} palettes`;
+        } else {
+            paletteHeader.textContent = "Showing all palettes";
+        }
+        _savedMsgTimer = null;
+    }, 2500);
+}
+
+function clearSelection(){
+    document.querySelectorAll('.mood-swatch.selected').forEach(el => el.classList.remove('selected'));
+    if(_selectionTimer){
+        clearTimeout(_selectionTimer);
+        _selectionTimer = null;
+    }
+}
+
+function saveColor(hex, swatch){
+    try {
+        localStorage.setItem('lastColor', hex);
+    } catch(e) {
+        // ignore storage errors
+    }
+
+    clearSelection();
+    if(swatch) swatch.classList.add('selected');
+
+    // clear any previous auto-clear timer and set a new one to remove the highlight
+    if(_selectionTimer) clearTimeout(_selectionTimer);
+    _selectionTimer = setTimeout(() => {
+        if(swatch) swatch.classList.remove('selected');
+        _selectionTimer = null;
+    }, 2500);
+
+    // try to copy to clipboard (best-effort)
+    if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(hex).then(() => {
+            showSavedMessage(`Copied ${hex}`);
+        }).catch(() => {
+            showSavedMessage(`Saved ${hex}`);
+        });
+    } 
+    else{
+        showSavedMessage(`Saved ${hex}`);
+    }
+}
+
+// render palettes
 function renderPalettes(){
     paletteList.innerHTML = "";
+
+    // check if a colour was previously saved so we can mark it
+    const lastSaved = localStorage.getItem('lastColor');
 
     const moodsToShow = (lastMood && lastMood !== 'none') ? [lastMood] : Object.keys(moodPalettes);
 
@@ -53,7 +119,7 @@ function renderPalettes(){
         const friendly = lastMood.charAt(0).toUpperCase() + lastMood.slice(1);
         paletteHeader.textContent = `Showing ${friendly} palettes`;
     } else {
-        paletteHeader.textContent = "";
+        paletteHeader.textContent = "Showing all palettes";
     }
 
     moodsToShow.forEach(mood => {
@@ -105,7 +171,15 @@ function renderPalettes(){
                 const label = document.createElement("span");
                 label.textContent = hex;
 
+                // clicking a swatch saves the hex and provides feedback
+                swatch.title = "Click to save & copy";
+                swatch.tabIndex = 0; // make keyboard-focusable
+                swatch.addEventListener('click', () => saveColor(hex, swatch));
+                swatch.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); saveColor(hex, swatch); } });
+
                 swatch.appendChild(label);
+
+
                 paletteRow.appendChild(swatch);
             });
 
