@@ -15,7 +15,7 @@ const lastMood = localStorage.getItem("lastMood");
 const moodPalettes = {
     happy: [
         { name: "summer beach", colours: ["#E2852E", "#F5C857", "#FFEE91", "#ABE0F0"] },
-        { name: "cool lemonade", colours: ["#FF9B00", "#FFE100", "#FFC900", "#EBE389"] },
+        { name: "lemonade", colours: ["#FF9B00", "#FFE100", "#FFC900", "#EBE389"] },
         { name: "pastel paradise", colours: ["#FFDCDC", "#FFF2EB", "#FFE8CD", "#FFD6BA"] },
         { name: "sunrise vibes", colours: ["#FFE99A", "#FFD586", "#FFAAAA", "#FF9898"] }
     ],
@@ -40,6 +40,27 @@ const moodPalettes = {
         { name: "flame burst", colours: ["#A70120", "#E26834FF", "#E9DA58FF", "#FFF3B4FF"] },
         { name: "fierce fire", colours: ["#581845", "#900C3F", "#C70039", "#FF5733"] },
         { name: "obsidian clash", colours: ["#000000", "#4D4444FF", "#A9A9A9", "#FF0000"] }
+    ],
+
+    disgusted:[
+        { name: "moldy green", colours: ["#556B2FFF", "#6B8E23FF", "#808000FF", "#9ACD32FF"] },
+        { name: "swamp lands", colours: ["#4A7023", "#6B8E23", "#8FBC8F", "#B0C4DE"] },
+        { name: "wiltered forest", colours: ["#7B4B3A", "#AFA48D", "#4E3B31", "#5B4F44"] },
+        { name: "toxic waste", colours: ["#B0A900", "#C8292F", "#800000", "#4A4A2D"] }
+    ],
+
+    fearful:[
+        { name: "vampire blood", colours: ["#2f2323", "#332424", "#311212", "#3c0000"] },
+        { name: "foggy skies", colours: ["#362c58", "#352942", "#381f3e", "#311f36"] },
+        { name: "tv static", colours: ["#111111", "#2b2b2b", "#969696", "#aaaaaa"] },
+        { name: "halloween thrill", colours: ["#B00000", "#FF5722", "#E84A3B", "#FFC107"] }
+    ],
+
+    surprised:[
+        { name: "party confetti", colours: ["#ffe3e3", "#fcd2ff", "#b3ffee", "#e3ffe2"] },
+        { name: "shocking pink", colours: ["#fc0fc0", "#fd57d3", "#fe8fe0", "#fec7ec"] },
+        { name: "sunburst", colours: ["#fffbef", "#fff0bd", "#ffe384", "#ffd856"] },
+        { name: "minty fresh", colours: ["#4cffbc", "#83ffd1", "#beffe7", "#ecfff8"] }
     ]
 };
 

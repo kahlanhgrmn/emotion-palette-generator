@@ -59,6 +59,7 @@ video {
     pointer-events: none;
     mix-blend-mode: soft-light;
     transition: background 0.25s ease, opacity 0.25s ease;
+    z-index: 50; /* ensure overlay sits above video */
 }
 
 .controls {
@@ -67,6 +68,60 @@ video {
     gap: 8px;
     margin-bottom: 16px;
 }
+
+
+
+#status {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #444;
+    background: rgba(255,255,255,0.6);
+    padding: 8px 10px;
+    border-radius: 10px;
+} 
+
+/* floating badge showing top expression */
+.live-badge{
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    z-index: 120;
+    pointer-events: none;
+}
+
+/* feature panel on the right */
+.feature-panel{
+    position: fixed;
+    right: 12px;
+    top: 60px;
+    width: 200px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 10px;
+    z-index: 110;
+}
+.feature-panel .fp-title{
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.fp-content{
+    font-size: 0.85rem;
+    color: #333;
+}
+.fp-row{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:4px;border-radius:6px;
+}
+.fp-row.inactive{opacity:0.55}
+.fp-label{font-weight:600}
+.fp-score{font-size:0.82rem;color:#777}
+
 
 .controls button {
     border: none;
@@ -101,6 +156,17 @@ video {
     color: #204332;
     transition: background 0.2s ease, transform 0.1s ease;
 }
+
+/* debug canvas overlay (draws face box & labels) */
+#debugCanvas{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+}
+
+/* small toggle for debug */
+
 
 #viewPalettesBtn:hover, #backToCameraBtn:hover{
     background: #C1ECD8;

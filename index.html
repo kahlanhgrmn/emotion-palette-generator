@@ -2,12 +2,14 @@
 <html lang = "en">
     <head>
         <meta charset = "UTF-8">
-        <title>Emotion Palette Camera - step 1</title>
+        <title>Emotion Palette Camera</title>
         <link rel="stylesheet" href = "styles.css">
+        <!-- face-api.js for on-device expression detection (UMD build) -->
+        <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     </head>
     <body>
         <div class = "app">
-            <h1>Emotion Palette Cam - Step 1</h1>
+            <h1>Emotion Palette Camera</h1>
             <p class = "subtitle">Allow webcam access to try out some filters</p>
 
             <div class = "video-container">
@@ -15,21 +17,25 @@
                 <div id="overlay" class="overlay"></div>
             </div>
 
-            <div class = "controls">
-                <button data-mood = "none">No Filter</button>
-                <button data-mood = "happy">Happy</button>
-                <button data-mood = "calm">Calm</button>
-                <button data-mood = "sad">Sad</button>
-                <button data-mood = "angry">Angry</button>
+
+
+            <div id="status" class="note" aria-live="polite">Status: starting…</div>
+
+            <!-- small floating badge showing the raw top expression + confidence -->
+            <div id="liveExpBadge" class="live-badge" aria-hidden="true">—</div>
+
+            <!-- right side feature panel describing face cues (mouth, brows, eyes) -->
+            <div id="featurePanel" class="feature-panel" aria-live="polite">
+                <div class="fp-title">Detected face cues</div>
+                <div id="fpContent" class="fp-content">Waiting for face…</div>
             </div>
 
             <div class = "nav-row">
                 <button id = "viewPalettesBtn">View Palettes</button>
             </div>
-            <p class = "note">Step 2: Manual moods, with a seperate page for colour palettes</p>
 
         </div>
 
-        <script src = "script.js"></script>
+        <script defer src = "script.js"></script>
     </body>
 </html>
