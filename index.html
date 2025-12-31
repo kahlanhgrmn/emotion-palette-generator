@@ -4,7 +4,7 @@
         <meta charset = "UTF-8">
         <title>Emotion Palette Camera</title>
         <link rel="stylesheet" href = "styles.css">
-        <!-- face-api.js for on-device expression detection (UMD build) -->
+        <!-- face-api.js (expression detection) -->
         <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     </head>
     <body>
@@ -21,12 +21,12 @@
 
             <div id="status" class="note" aria-live="polite">Status: starting…</div>
 
-            <!-- small floating badge showing the raw top expression + confidence -->
+            <!-- shows expression + confidence -->
             <div id="liveExpBadge" class="live-badge" aria-hidden="true">—</div>
 
-            <!-- right side feature panel describing face cues (mouth, brows, eyes) -->
+            <!-- facial cues (mouth, brows, eyes) -->
             <div id="featurePanel" class="feature-panel" aria-live="polite">
-                <div class="fp-title">Detected face cues</div>
+                <div class="fp-title">Detected facial cues</div>
                 <div id="fpContent" class="fp-content">Waiting for face…</div>
             </div>
 

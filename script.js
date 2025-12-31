@@ -8,7 +8,7 @@ let debugCanvas = null;
 async function startCamera() {
     console.log("Attempting to start camera...");
 
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
         console.error("getUserMedia is not supported in this browser.");
         alert("Your browser does not support camera access via getUserMedia.");
         return;
@@ -18,7 +18,7 @@ async function startCamera() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         console.log("Camera stream obtained:", stream);
         video.srcObject = stream;
-        // try to start playback; some browsers may block autoplay until user interaction
+
         await video.play().catch(() => {});
         return stream;
     } 
@@ -31,16 +31,16 @@ async function startCamera() {
 // colours for each mood
 const moodOverlayColours = {
     none: "transparent",
-    happy: "rgba(192, 147, 22, 0.6)",   // yellow
-    calm: "rgba(192, 255, 249, 0.6)",    // light blue
-    sad: "rgba(28, 71, 201, 0.6)",      // blue
-    angry: "rgba(255, 106, 136, 0.6)",    // red
-    disgusted: "rgba(102, 153, 0, 0.55)", // olive green
-    fearful: "rgba(80, 40, 120, 0.45)",   // purple
-    surprised: "rgba(255, 220, 100, 0.6)" // bright
+    happy: "rgba(192, 147, 22, 0.6)",
+    calm: "rgba(192, 255, 249, 0.6)",
+    sad: "rgba(28, 71, 201, 0.6)",
+    angry: "rgba(255, 106, 136, 0.6)",
+    disgusted: "rgba(102, 153, 0, 0.55)",
+    fearful: "rgba(80, 40, 120, 0.45)",
+    surprised: "rgba(255, 220, 100, 0.6)"
 };
 
-// mood palettes (each mood has multiple named variants)
+// mood palettes
 const moodPalettes = {
     happy: [
         { name: "summer beach", colours: ["#E2852E", "#F5C857", "#FFEE91", "#ABE0F0"] },
@@ -92,7 +92,7 @@ const moodPalettes = {
     ]
 };
 
-// remember last mood and overlay
+// remember last mood
 function applyMood(mood){
     const colour = moodOverlayColours[mood] || "transparent";
 
@@ -102,29 +102,21 @@ function applyMood(mood){
     localStorage.setItem("lastMood", mood);
     // update the live badge to reflect the applied mood
     updateLiveBadge(null, null);
-
-    // we only need to remember the mood so the palette page shows that mood's variants
-    // don't persist entire palette objects here
 } 
 
-// manual mood buttons removed — auto-detection updates mood instead
-
-
-// go to the palette page
-// store the latest instantaneous mood detected (updated in the detection loop)
 let currentInstantMood = 'none';
 
 if(viewPalettesBtn){
     viewPalettesBtn.addEventListener("click", () =>{
-        // When navigating to palettes, use the latest instantaneous mood if available
-        const last = currentInstantMood && currentInstantMood !== 'none' ? currentInstantMood : (localStorage.getItem('lastMood') || 'none');
+        // When navigating to palettes, use the latest instantaneous mood
+        const last = currentInstantMood && currentInstantMood !== 'none'? currentInstantMood : (localStorage.getItem('lastMood') || 'none');
         localStorage.setItem('lastMood', last);
         setStatus(`Using ${capitalize(last)} for palettes`);
         window.location.href = "palette.html";
     });
 }
 
-// debug overlay: show while holding 'D' (no button required)
+// debug overlay: show while holding 'D'
 window.addEventListener('keydown', (e) => {
     if (e.code !== 'KeyD') return;
     if (e.repeat) return;
@@ -146,10 +138,10 @@ window.addEventListener('blur', () => hideDebugCanvas());
 // start camera
 document.addEventListener("DOMContentLoaded", async () => {
     await startCamera();
-    // initialize label from last saved mood
+    // initialise label from last saved mood
     const last = localStorage.getItem('lastMood') || 'none';
     updateLiveBadge(null, null);
-    // begin auto detection (best-effort; if models not present detection will fail quietly)
+
     startExpressionDetection(video);
 });
 
@@ -162,6 +154,7 @@ async function loadFaceModels(){
         console.warn("face-api.js not loaded - facial detection disabled");
         return;
     }
+
     try{
         setStatus('loading models...');
         await Promise.all([
@@ -171,7 +164,8 @@ async function loadFaceModels(){
         ]);
         faceModelsLoaded = true;
         setStatus('models loaded');
-    }catch(e){
+    }
+    catch(e){
         console.error("Error loading face-api models:", e);
         setStatus('model load failed - see console');
     }
@@ -207,7 +201,7 @@ function hideDebugCanvas(){
     if(debugCanvas) debugCanvas.style.display = 'none';
 }
 
-// Detection tuning - tweak these to change responsiveness/smoothing
+// Detection tuning
 const expressionHistory = [];
 const DETECTION_INTERVAL_MS = 700; // run detection every ~700ms (lower frequency = more stable)
 const HISTORY_LEN = 10;            // number of recent frames to keep for smoothing
@@ -232,10 +226,12 @@ function expressionToMood(expression){
 
 
 
-// set a small visible status for debugging and log to console
 const statusEl = document.getElementById('status');
 function setStatus(text){
-    try{ if(statusEl) statusEl.textContent = 'Status: ' + text; }catch(e){}
+    try{ 
+        if(statusEl) statusEl.textContent = 'Status: ' + text; 
+    }
+    catch(e){}
     console.log('[status]', text);
 }
 
@@ -244,7 +240,7 @@ async function startExpressionDetection(videoEl){
     detectionRunning = true;
 
     if(!window.faceapi){
-        console.warn("face-api.js not available - skipping detection");
+        console.warn("face-api.js not available");
         return;
     }
 
@@ -266,7 +262,7 @@ async function startExpressionDetection(videoEl){
         let detection = null;
 
         try{
-            // detect face + landmarks + expressions so we can analyze cues
+            // detect face + landmarks + expressions
             detection = await faceapi.detectSingleFace(videoEl, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
             if(detection && detection.expressions){
                 const exps = detection.expressions;
@@ -276,14 +272,17 @@ async function startExpressionDetection(videoEl){
                     chosenMood = expressionToMood(top);
                     // update the latest instantaneous mood so it can be used when the user navigates to palettes
                     currentInstantMood = expressionToMood(top);
-                } else {
+                } 
+                else {
                     // if confidence is low, clear instantaneous mood
                     currentInstantMood = 'none';
                 }
-            } else {
+            } 
+            else {
                 currentInstantMood = 'none';
             }
-        }catch(e){
+        }
+        catch(e){
             console.error("Error during face detection:", e);
             currentInstantMood = 'none';
         }
@@ -301,11 +300,12 @@ async function startExpressionDetection(videoEl){
             const p = Math.round(detection.expressions[topExp]*100);
             setStatus(`${topExp} ${p}%`);
             updateLiveBadge(topExp, p);
-            // analyze landmarks and expressions to show feature cues
+            // analyse landmarks and expressions to show feature cues
             if(detection.landmarks){
                 const cues = analyzeFaceCues(detection.landmarks, detection.expressions, detection.detection.box);
                 updateFeaturePanel(cues);
-            } else {
+            } 
+            else {
                 updateFeaturePanel(null);
             }
 
@@ -314,7 +314,8 @@ async function startExpressionDetection(videoEl){
             const overlayColour = moodOverlayColours[overlayMood] || 'transparent';
             overlay.style.background = overlayColour;
             overlay.style.opacity = (overlayMood === 'none') ? '0' : '1';
-        } else {
+        } 
+        else {
             setStatus('no face detected');
             updateLiveBadge(null, null);
             updateFeaturePanel(null);
@@ -408,7 +409,8 @@ function analyzeFaceCues(landmarks, expressions, box){
         const norm = (eyeY - browY) / box.height; // positive when brows above eyes
         if(norm > 0.06) { browsCue = { label: 'raised', score: Math.round(norm*1000)/10 } }
         else if(norm < 0.0) { browsCue = { label: 'lowered', score: Math.round(-norm*1000)/10 } }
-    }catch(e){ }
+    }
+    catch(e){ }
 
     // eyes: open/wide/closed
     let eyesCue = { label: 'normal', score: 0 };
@@ -421,7 +423,8 @@ function analyzeFaceCues(landmarks, expressions, box){
         const eyeNorm = eyeAvg / box.height;
         if(eyeNorm > 0.045) eyesCue = { label: 'wide', score: Math.round(eyeNorm*1000)/10 }
         else if(eyeNorm < 0.02) eyesCue = { label: 'narrow', score: Math.round(eyeNorm*1000)/10 }
-    }catch(e){ }
+    }
+    catch(e){ }
 
     return { mouth: mouthCue, brows: browsCue, eyes: eyesCue, expressions: ex };
 }
@@ -436,7 +439,8 @@ function updateLiveBadge(exp, prob){
         if(applied && applied !== 'none'){
             badge.textContent = `${capitalize(applied)} (applied)`;
             badge.style.opacity = 0.85;
-        } else {
+        } 
+        else {
             badge.textContent = '—'; badge.style.opacity = 0.6;
         }
         return;

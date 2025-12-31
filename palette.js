@@ -65,56 +65,65 @@ const moodPalettes = {
 };
 
 // saved message timer for brief UI feedback
-let _savedMsgTimer = null;
+let savedMsgTimer = null;
 // selection timer to auto-clear the visual selection
-let _selectionTimer = null;
+let selectionTimer = null;
 
 function clearSavedMessage(){
-    if(_savedMsgTimer) clearTimeout(_savedMsgTimer);
-    _savedMsgTimer = null;
+    if(savedMsgTimer){
+        clearTimeout(savedMsgTimer);
+    } 
+    savedMsgTimer = null;
 }
 
 function showSavedMessage(text){
     paletteHeader.textContent = text;
     clearSavedMessage();
-    _savedMsgTimer = setTimeout(() => {
+
+    savedMsgTimer = setTimeout(() => {
         // restore header (either showing mood or "all palettes")
         if(lastMood && lastMood !== 'none'){
-            const friendly = lastMood.charAt(0).toUpperCase() + lastMood.slice(1);
-            paletteHeader.textContent = `Showing ${friendly} palettes`;
-        } else {
+            const moodShown = lastMood.charAt(0).toUpperCase() + lastMood.slice(1);
+            paletteHeader.textContent = `Showing ${moodShown} palettes`;
+        } 
+        else{
             paletteHeader.textContent = "Showing all palettes";
         }
-        _savedMsgTimer = null;
+        savedMsgTimer = null;
     }, 2500);
 }
 
 function clearSelection(){
     document.querySelectorAll('.mood-swatch.selected').forEach(el => el.classList.remove('selected'));
-    if(_selectionTimer){
-        clearTimeout(_selectionTimer);
-        _selectionTimer = null;
+
+    if(selectionTimer){
+        clearTimeout(selectionTimer);
+        selectionTimer = null;
     }
 }
 
 function saveColor(hex, swatch){
     try {
         localStorage.setItem('lastColor', hex);
-    } catch(e) {
-        // ignore storage errors
+    } 
+    catch(e) {
+        // ignoring storage errors
     }
 
     clearSelection();
     if(swatch) swatch.classList.add('selected');
 
     // clear any previous auto-clear timer and set a new one to remove the highlight
-    if(_selectionTimer) clearTimeout(_selectionTimer);
-    _selectionTimer = setTimeout(() => {
-        if(swatch) swatch.classList.remove('selected');
-        _selectionTimer = null;
+    if(selectionTimer){
+        clearTimeout(selectionTimer);
+    }
+
+    selectionTimer = setTimeout(() => {
+        if(swatch) { swatch.classList.remove('selected'); }
+        selectionTimer = null;
     }, 2500);
 
-    // try to copy to clipboard (best-effort)
+    // copy palette colour to the clipboard
     if(navigator.clipboard && navigator.clipboard.writeText){
         navigator.clipboard.writeText(hex).then(() => {
             showSavedMessage(`Copied ${hex}`);
@@ -131,15 +140,16 @@ function saveColor(hex, swatch){
 function renderPalettes(){
     paletteList.innerHTML = "";
 
-    // check if a colour was previously saved so we can mark it
+    // check if a colour was previously saved to then mark it
     const lastSaved = localStorage.getItem('lastColor');
 
-    const moodsToShow = (lastMood && lastMood !== 'none') ? [lastMood] : Object.keys(moodPalettes);
+    const moodsToShow = (lastMood && lastMood !== 'none')? [lastMood] : Object.keys(moodPalettes);
 
     if(lastMood && lastMood !== 'none'){
         const friendly = lastMood.charAt(0).toUpperCase() + lastMood.slice(1);
         paletteHeader.textContent = `Showing ${friendly} palettes`;
-    } else {
+    } 
+    else {
         paletteHeader.textContent = "Showing all palettes";
     }
 
@@ -149,7 +159,6 @@ function renderPalettes(){
         const card = document.createElement("div");
         card.className = "mood-card";
 
-        // only highlight the mood card if multiple moods are shown
         if(lastMood && moodsToShow.length > 1 && lastMood === mood){
             card.classList.add("highlight");
         }
@@ -165,7 +174,7 @@ function renderPalettes(){
         const tag = document.createElement("div");
         tag.className = "mood-tag";
         // only show a tag when this mood is the last selected one among multiple moods
-        tag.textContent = (lastMood === mood && moodsToShow.length > 1) ? "Last selected mood" : "";
+        tag.textContent = (lastMood === mood && moodsToShow.length > 1)? "Last selected mood" : "";
 
         header.appendChild(title);
         header.appendChild(tag);
@@ -212,8 +221,6 @@ function renderPalettes(){
         paletteList.appendChild(card);
     });
 }
-
-// make the mood cards (render now)
 
 // back button to camera page
 backToCameraBtn.addEventListener("click", () => {
