@@ -1,0 +1,285 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body{
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FEF6FF, #E4F5FF);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app{
+    background: #FFFFFFDD;
+    border-radius: 18px;
+    padding: 24px 28px 32px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+h1{
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.subtitle{
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #111;
+    margin-bottom: 16px;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: none;
+    transition: filter 0.25s ease;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    transition: background 0.25s ease, opacity 0.25s ease;
+    z-index: 50; /* ensure overlay sits above video */
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+
+
+#status {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #444;
+    background: rgba(255,255,255,0.6);
+    padding: 8px 10px;
+    border-radius: 10px;
+} 
+
+/* floating badge showing top expression */
+.live-badge{
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    z-index: 120;
+    pointer-events: none;
+}
+
+/* feature panel on the right */
+.feature-panel{
+    position: fixed;
+    right: 12px;
+    top: 60px;
+    width: 200px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 10px;
+    z-index: 110;
+}
+.feature-panel .fp-title{
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.fp-content{
+    font-size: 0.85rem;
+    color: #333;
+}
+.fp-row{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:4px;border-radius:6px;
+}
+.fp-row.inactive{opacity:0.55}
+.fp-label{font-weight:600}
+.fp-score{font-size:0.82rem;color:#777}
+
+
+.controls button {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #F2F2FF;
+    color: #333;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.controls button:hover {
+    background: #E0DDFF;
+    transform: translateY(-1px);
+}
+
+.nav-row{
+    margin-top: 8px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#viewPalettesBtn, #backToCameraBtn{
+    border: none;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background: #D8F5E6;
+    color: #204332;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* debug canvas overlay (draws face box & labels) */
+#debugCanvas{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+}
+
+#viewPalettesBtn:hover, #backToCameraBtn:hover{
+    background: #C1ECD8;
+    transform: translateY(-1px);
+}
+
+.palette-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.mood-card {
+    background: #F7F7FF;
+    border-radius: 14px;
+    padding: 12px 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.mood-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.mood-name {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.mood-tag {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #E5F4FF;
+    color: #28506D;
+}
+
+.mood-card.highlight {
+    border: 2px solid #A4D8B5;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.mood-palette {
+    display: flex;
+    gap: 12px;
+}
+
+.mood-variant {
+    padding: 12px 0 18px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    margin-bottom: 18px;
+}
+
+.mood-variant:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.mood-variant .note {
+    margin: 0 0 6px;
+}
+
+.mood-swatch {
+    flex: 1;
+    border-radius: 10px;
+    height: 36px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, outline .12s ease;
+}
+
+.mood-swatch.selected {
+    outline: 2px solid #000;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.mood-swatch span {
+    position: absolute;
+    bottom: 3px;
+    right: 5px;
+    font-size: 0.7rem;
+    color: #FFF;
+    font-weight: 600;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 0 2px rgba(0,0,0,0.5);
+}
+
+
+.note {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+/* Filter styles that will be toggles using js */
+
+.filter-none {
+    filter: none;
+}
+
+.filter-happy {
+    filter: saturate(1.4) hue-rotate(10deg) brightness(1.15);
+}
+
+.filter-calm {
+    filter: saturate(0.9) hue-rotate(-20deg) brightness(1.05);
+}
+
+.filter-moody {
+    filter: contrast(1.2) brightness(0.8) hue-rotate(-40deg);
+}
+
+.filter-energetic {
+    filter: saturate(1.6) contrast(1.2) brightness(1.1);
+}

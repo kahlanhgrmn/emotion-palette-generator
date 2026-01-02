@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8">
+        <title>Emotion Palette Camera</title>
+        <link rel="stylesheet" href = "styles.css">
+        <!-- face-api.js (expression detection) -->
+        <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    </head>
+    <body>
+        <div class = "app">
+            <h1>Emotion Palette Camera</h1>
+            <p class = "subtitle">Allow webcam access to try out some filters</p>
+
+            <div class = "video-container">
+                <video id = "video" autoplay playsinline></video>
+                <div id="overlay" class="overlay"></div>
+            </div>
+
+
+
+            <div id="status" class="note" aria-live="polite">Status: starting…</div>
+
+            <!-- shows expression + confidence -->
+            <div id="liveExpBadge" class="live-badge" aria-hidden="true">—</div>
+
+            <!-- facial cues (mouth, brows, eyes) -->
+            <div id="featurePanel" class="feature-panel" aria-live="polite">
+                <div class="fp-title">Detected facial cues</div>
+                <div id="fpContent" class="fp-content">Waiting for face…</div>
+            </div>
+
+            <div class = "nav-row">
+                <button id = "viewPalettesBtn">View Palettes</button>
+            </div>
+
+        </div>
+
+        <script defer src = "script.js"></script>
+    </body>
+</html>
