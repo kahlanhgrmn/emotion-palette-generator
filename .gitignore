@@ -1,7 +1,6 @@
 # Ignore downloaded face-api model weights
 /models/
 
-# Project files you typically don't commit
 .vscode/
 node_modules/
 .DS_Store
